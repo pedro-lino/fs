@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    environment:
+      - APP_ENV=dev
+    networks:
+      - internal
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    ports:
+      - "443:443"
+    depends_on:
+      - server
+    networks:
+      - internal
+      - frontend
+
+networks:
+  internal:
+    internal: true
+  frontend:
+    external: false
